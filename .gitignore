@@ -1,14 +1,32 @@
-# Python virtual environment
-.venv/
-venv/
-ENV/
-
-# Python bytecode
-**/__pycache__/
+# Python
+__pycache__/
 *.pyc
+*.pyo
+.venv/
+*.egg-info/
 
-# IDE settings
+# Environment files
+.env
+.env.*
+
+# AWS credentials - never commit these
+.aws/
+
+# Docker
+.docker/
+
+# Terraform state - contains sensitive output
+terraform/.terraform/
+terraform/*.tfstate
+terraform/*.tfstate.backup
+terraform/.terraform.lock.hcl
+
+# Test cache
+.pytest_cache/
+.coverage
+htmlcov/
+
+# IDE
 .vscode/
-
-# OS specific files
-.DS_Store
+.idea/
+*.swp

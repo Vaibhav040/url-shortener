@@ -1,0 +1,28 @@
+version: "3.9"
+
+services:
+  app:
+    build: .
+    ports:
+      - "8000:8000"
+    environment:
+      - BASE_URL=http://localhost:8000
+      - AWS_REGION=ap-south-1
+      - DYNAMODB_TABLE=url-shortener
+      - REDIS_HOST=redis
+      - REDIS_PORT=6379
+    volumes:
+      - ~/.aws:/home/appuser/.aws:ro
+    depends_on:
+      - redis
+    healthcheck:
+      test: ["CMD", "python3", "-c", "import urllib.request; urllib.request.urlopen('http://localhost:8000')"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  redis:
+    image: redis:7-alpine
+    ports:
+      - "6379:6379"
+    command: redis-server --maxmemory 128mb --maxmemory-policy allkeys-lru

@@ -3,10 +3,10 @@ from fastapi import FastAPI, HTTPException
 from fastapi.responses import RedirectResponse
 from botocore.exceptions import ClientError
 
-from app.models import URLCreate, URLResponse, URLInfo
-from app.database import save_url, get_url, increment_visit_count
-from app.cache import get_cached_url, cache_url
-from app.config import Settings
+from models import URLCreate, URLResponse, URLInfo
+from database import save_url, get_url, increment_visit_count
+from cache import get_cached_url, cache_url
+from config import Settings
 
 logging.basicConfig(level=logging.INFO)
 logger= logging.getLogger(__name__)
