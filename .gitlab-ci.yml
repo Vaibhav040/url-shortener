@@ -74,6 +74,7 @@ owasp-dependency-check:
         --format JSON
         --out reports/
         --failOnCVSS 8
+        --nvdApiKey $NVD_API_KEY
   artifacts:
     when: always
     paths:
