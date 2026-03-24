@@ -66,6 +66,7 @@ owasp-dependency-check:
     - unzip -q dependency-check-9.0.9-release.zip
 
   script:
+    - mkdir -p reports/
     - ./dependency-check/bin/dependency-check.sh
         --project "url-shortener"
         --scan app/requirements.txt
