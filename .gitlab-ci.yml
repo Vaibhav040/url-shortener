@@ -61,7 +61,7 @@ owasp-dependency-check:
   stage: dependency-check
   image: python:3.12-slim
   before_script:
-    - apt-get update -qq && apt-get install -y -qq default-jre wget
+    - apt-get update -qq && apt-get install -y -qq unzip && apt-get install -y -qq default-jre wget
     - wget -q https://github.com/jeremylong/DependencyCheck/releases/download/v9.0.9/dependency-check-9.0.9-release.zip
     - unzip -q dependency-check-9.0.9-release.zip
 
