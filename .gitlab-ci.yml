@@ -74,7 +74,7 @@ owasp-dependency-check:
         --format JSON
         --out reports/
         --failOnCVSS 8
-        --nvdApiKey $NVD_API_KEY
+        --nvdApiKey https://jeremylong.github.io/DependencyCheck/data/nvdcve-1.1.json.gz
         --nvdApiDelay 20000
   artifacts:
     when: always
