@@ -75,7 +75,7 @@ owasp-dependency-check:
         --out reports/
         --failOnCVSS 8
         --nvdApiKey $NVD_API_KEY
-        --nvdApiDelay 10000
+        --nvdApiDelay 20000
   artifacts:
     when: always
     paths:
