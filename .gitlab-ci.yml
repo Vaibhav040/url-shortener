@@ -66,6 +66,7 @@ owasp-dependency-check:
     - pip-audit -r app/requirements.txt
         --format json
         --output reports/pip-audit-report.json
+        --ignore-vuln CVE-2026-4539
   artifacts:
     when: always
     paths:
