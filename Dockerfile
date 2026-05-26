@@ -14,10 +14,13 @@ FROM python:3.12-slim AS runtime
 
 WORKDIR /app
 
-RUN addgroup --system appgroup && \
+RUN apt-get update && \
+    apt-get upgrade -y && \
+    rm -rf /var/lib/apt/lists/* \
+    addgroup --system appgroup && \
     adduser --system --ingroup appgroup appuser
 
-COPY --from=builder /install /ust/local
+COPY --from=builder /install /usr/local
 COPY app/ .
 
 RUN chown -R appuser:appgroup /app
