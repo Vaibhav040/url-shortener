@@ -63,7 +63,7 @@ dependency-check:
   script:
     - pip install pip-audit
     - mkdir -p reports
-    - pip-audit -r app/requirements.txt -c app/constraints.txt
+    - pip-audit -r app/requirements.txt -r app/constraints.txt
         --format json
         --output reports/pip-audit-report.json
   artifacts:
