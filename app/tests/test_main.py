@@ -1,7 +1,7 @@
 import pytest
 from fastapi.testclient import TestClient
 from unittest.mock import patch, MagicMock
-from app.main import app
+from main import app
 
 client = TestClient(app)
 
@@ -14,8 +14,8 @@ def test_health_check():
 
 
 # ── Shorten URL ───────────────────────────────────────────
-@patch("app.main.save_url")
-@patch("app.main.cache_url")
+@patch("main.save_url")
+@patch("main.cache_url")
 def test_shorten_url_success(mock_cache, mock_save):
     mock_save.return_value = {
         "short_code": "abc1234",
@@ -36,7 +36,7 @@ def test_shorten_url_success(mock_cache, mock_save):
     mock_cache.assert_called_once()
 
 
-@patch("app.main.save_url")
+@patch("main.save_url")
 def test_shorten_url_duplicate_code(mock_save):
     from botocore.exceptions import ClientError
     mock_save.side_effect = ClientError(
@@ -60,8 +60,8 @@ def test_shorten_invalid_url():
 
 
 # ── Redirect ──────────────────────────────────────────────
-@patch("app.main.get_cached_url")
-@patch("app.main.increment_visit_count")
+@patch("main.get_cached_url")
+@patch("main.increment_visit_count")
 def test_redirect_cache_hit(mock_increment, mock_cache):
     mock_cache.return_value = "https://google.com"
 
@@ -72,10 +72,10 @@ def test_redirect_cache_hit(mock_increment, mock_cache):
     mock_increment.assert_called_once_with("abc1234")
 
 
-@patch("app.main.get_cached_url")
-@patch("app.main.get_url")
-@patch("app.main.cache_url")
-@patch("app.main.increment_visit_count")
+@patch("main.get_cached_url")
+@patch("main.get_url")
+@patch("main.cache_url")
+@patch("main.increment_visit_count")
 def test_redirect_cache_miss(mock_increment, mock_cache, mock_get, mock_cached):
     mock_cached.return_value = None
     mock_get.return_value = {
@@ -92,8 +92,8 @@ def test_redirect_cache_miss(mock_increment, mock_cache, mock_get, mock_cached):
     mock_increment.assert_called_once()
 
 
-@patch("app.main.get_cached_url")
-@patch("app.main.get_url")
+@patch("main.get_cached_url")
+@patch("main.get_url")
 def test_redirect_not_found(mock_get, mock_cached):
     mock_cached.return_value = None
     mock_get.return_value = None
@@ -104,7 +104,7 @@ def test_redirect_not_found(mock_get, mock_cached):
 
 
 # ── URL Info ──────────────────────────────────────────────
-@patch("app.main.get_url")
+@patch("main.get_url")
 def test_get_url_info(mock_get):
     mock_get.return_value = {
         "short_code": "abc1234",
@@ -121,7 +121,7 @@ def test_get_url_info(mock_get):
     assert data["short_code"] == "abc1234"
 
 
-@patch("app.main.get_url")
+@patch("main.get_url")
 def test_get_url_info_not_found(mock_get):
     mock_get.return_value = None
 

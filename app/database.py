@@ -2,7 +2,7 @@ import boto3
 import string
 import random
 from datetime import datetime, timezone
-from app.config import settings
+from config import settings
 
 
 dynamodb = boto3.resource("dynamodb", region_name=settings.aws_region)
