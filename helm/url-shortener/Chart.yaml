@@ -1,0 +1,13 @@
+apiVersion: v2
+name: url-shortener
+description: Production-grade URL shorteneer with DevSecOps Pipeline
+type: application
+version: 0.1.0
+appVersion: "1.0.0"
+keywords:
+  - url-shortener
+  - devops
+  - fastapi
+maintainers:
+  - name: Vaibhav Chauhan
+    email: vaibhavchauhan0400@gmail.com
