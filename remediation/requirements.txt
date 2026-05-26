@@ -1,4 +1,4 @@
 kubernetes==29.0.0
 requests==2.31.0
 prometheus-api-client==0.5.3
-# pipeline test
+# pipeline testing

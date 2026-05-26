@@ -113,7 +113,7 @@ build-operator:
     - sed -i "s|REPLACEMENT_IMAGE_TAG|$DOCKER_USER/remediation-operator:$IMAGE_TAG|g" k8s/manifests/operators/remediation-deployment.yaml
     - git add k8s/manifests/operators/remediation-deployment.yaml
     - git commit -m "chore- update remediation operator image to $IMAGE_TAG [ci skip]"
-    - git push origin main
+    - git push origin HEAD:main
 
 trivy-scan:
   
