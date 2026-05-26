@@ -1,4 +1,4 @@
-replicaCount: 2
+replicaCount: 3
 
 image:
   repository: vaibhav04c/url-shortener
@@ -54,4 +54,5 @@ redis:
 serviceAccount:
   create: true
   name: url-shortener-sa
-  annotations: {}
+  annotations:
+    eks.amazonaws.com/role-arn: arn:aws:iam::773384830615:role/url-shortener-sa-role
