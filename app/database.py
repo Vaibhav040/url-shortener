@@ -2,12 +2,12 @@ import boto3
 import string
 import random
 from datetime import datetime, timezone
-from config import Settings
+from config import settings
 
-dynamodb = boto3.resource("dynamodb", region_name=Settings.aws_region)
-table = dynamodb.Table(Settings.dynamo_table)
+dynamodb = boto3.resource("dynamodb", region_name=settings.aws_region)
+table = dynamodb.Table(settings.dynamo_table)
 
-def generate_short_code(length: int = Settings.short_code_length) -> str:
+def generate_short_code(length: int = settings.short_code_length) -> str:
     characters = string.ascii_letters + string.digits
     return "".join(random.choices(characters, k=length))
 
@@ -23,7 +23,7 @@ def save_url(original_url: str, custom_code: str = None) -> dict:
 
     table.put_item(
         Item=item,
-        conditionExpression="attribute_not_exists(short_code)"
+        ConditionExpression="attribute_not_exists(short_code)"
     )
     return item
 
@@ -34,6 +34,6 @@ def get_url(short_code: str) -> dict | None:
 def increment_visit_count(short_code: str):
     table.update_item(
         Key={"short_code": short_code},
-        UpdateExpression="ADD_visit_count : inc",
+        UpdateExpression="ADD visit_count : inc",
         ExpressionAttributeValues={":inc": 1}
     )
