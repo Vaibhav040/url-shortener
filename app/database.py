@@ -1,7 +1,7 @@
 import boto3
 import string
 import random
-from datetime import datetime
+from datetime import datetime, timezone
 from config import Settings
 
 dynamodb = boto3.resource("dynamodb", region_name=Settings.aws_region)
@@ -18,7 +18,7 @@ def save_url(original_url: str, custom_code: str = None) -> dict:
         "short_code": short_code,
         "original_url": original_url,
         "visit_count": 0,
-        "created_at": datetime.utcnow().isoformat,
+        "created_at": datetime.now(timezone.utc).isoformat(),
     }
 
     table.put_item(
