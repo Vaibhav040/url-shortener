@@ -3,6 +3,7 @@ stages:
   - sast
   - dependency-check
   - build
+  - build-operator
   - scan
   - push
 
@@ -90,6 +91,29 @@ docker-build:
   needs:
     - sonarcloud-check
     - dependency-check
+
+build-operator:
+  stage: build-operator
+  image: docker:24-dind
+  services:
+    - docker:24-dind
+  rules:
+    - changes:
+        - remediation/*
+  before_script:
+    - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USER" --password-stdin
+    - git remote set-url origin https://oauth2:$GITLAB_TOKEN@gitlab.com/vaibhavC54/url-shortner.git
+    - git config --global user.email "ci@gitlab.com"
+    - git config --global user.name "CI Pipeline"
+  script:
+    - docker build -t $DOCKER_USER/remediation-operator:$CI_COMMIT_SHORT_SHA ./remediation
+    - docker push $DOCKER_USER/remediation-operator:$CI_COMMIT_SHORT_SHA
+    - docker tag $DOCKER_USER/remediation-operator:$CI_COMMIT_SHORT_SHA $DOCKER_USER/remediation-operator:latest
+    - docker push $DOCKER_USER/remediation-operator:latest
+    - sed -i "s|REPLACEMENT_IMAGE_TAG|$DOCKER_USER/remediation-operator:$IMAGE_TAG|g" k8s/manifests/operators/remediation-deployment.yaml
+    - git add k8s/manifests/operators/remediation-deployment.yaml
+    - git commit -m "chore- update remediation operator image to $IMAGE_TAG [ci skip]"
+    - git push origin main
 
 trivy-scan:
   
