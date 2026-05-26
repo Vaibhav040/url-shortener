@@ -5,25 +5,23 @@ from app.main import app
 
 client = TestClient(app)
 
-# ------- Health Check -------
 
+# ── Health check ──────────────────────────────────────────
 def test_health_check():
     response = client.get("/health")
-    assert response.status_code==200
+    assert response.status_code == 200
     assert response.json()["status"] == "healthy"
 
 
-# ------- Shortern Url ------
-
+# ── Shorten URL ───────────────────────────────────────────
 @patch("app.main.save_url")
 @patch("app.main.cache_url")
-
 def test_shorten_url_success(mock_cache, mock_save):
     mock_save.return_value = {
-        "short_code" : "abc1234",
-        "original_url" : "https://google.com",
-        "visist_count" : 0,
-        "created_at" : "2026-01-01T00:00:00"
+        "short_code": "abc1234",
+        "original_url": "https://google.com",
+        "visit_count": 0,
+        "created_at": "2026-01-01T00:00:00"
     }
 
     response = client.post("/shorten", json={
@@ -33,9 +31,10 @@ def test_shorten_url_success(mock_cache, mock_save):
     assert response.status_code == 200
     data = response.json()
     assert data["short_code"] == "abc1234"
-    assert "shorten_url" in data
+    assert "short_url" in data
     mock_save.assert_called_once()
     mock_cache.assert_called_once()
+
 
 @patch("app.main.save_url")
 def test_shorten_url_duplicate_code(mock_save):
@@ -46,21 +45,21 @@ def test_shorten_url_duplicate_code(mock_save):
     )
 
     response = client.post("/shorten", json={
-        "original_url" : "https://googl.com",
-        "cutome_code" : "taken"
+        "original_url": "https://google.com",
+        "custom_code": "taken"
     })
 
     assert response.status_code == 409
 
-def test_shorten_invalid_url():
-    response = client.post("/shorten", json= {
-        "original_url" : "not-a-real-url"
-    })
 
+def test_shorten_invalid_url():
+    response = client.post("/shorten", json={
+        "original_url": "not-a-real-url"
+    })
     assert response.status_code == 422
 
-# ------- Redirect -------
 
+# ── Redirect ──────────────────────────────────────────────
 @patch("app.main.get_cached_url")
 @patch("app.main.increment_visit_count")
 def test_redirect_cache_hit(mock_increment, mock_cache):
@@ -71,6 +70,7 @@ def test_redirect_cache_hit(mock_increment, mock_cache):
     assert response.status_code == 301
     assert response.headers["location"] == "https://google.com"
     mock_increment.assert_called_once_with("abc1234")
+
 
 @patch("app.main.get_cached_url")
 @patch("app.main.get_url")
@@ -91,6 +91,7 @@ def test_redirect_cache_miss(mock_increment, mock_cache, mock_get, mock_cached):
     mock_cache.assert_called_once()
     mock_increment.assert_called_once()
 
+
 @patch("app.main.get_cached_url")
 @patch("app.main.get_url")
 def test_redirect_not_found(mock_get, mock_cached):
@@ -101,11 +102,11 @@ def test_redirect_not_found(mock_get, mock_cached):
 
     assert response.status_code == 404
 
-# ------- URL Info -------
 
+# ── URL Info ──────────────────────────────────────────────
 @patch("app.main.get_url")
-def test_get_url_info(mocke_get):
-    mocke_get.return_value = {
+def test_get_url_info(mock_get):
+    mock_get.return_value = {
         "short_code": "abc1234",
         "original_url": "https://google.com",
         "visit_count": 5,
@@ -119,10 +120,11 @@ def test_get_url_info(mocke_get):
     assert data["visit_count"] == 5
     assert data["short_code"] == "abc1234"
 
+
 @patch("app.main.get_url")
 def test_get_url_info_not_found(mock_get):
     mock_get.return_value = None
 
-    response =client.get("/nonexistent/info")
+    response = client.get("/nonexistent/info")
 
     assert response.status_code == 404

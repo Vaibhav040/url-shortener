@@ -11,7 +11,7 @@ class URLCreate(BaseModel):
 class URLResponse(BaseModel):
     short_code: str
     original_url: str
-    shorten_url: str
+    short_url: str
     created_at: str
 
 
