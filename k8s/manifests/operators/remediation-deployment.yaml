@@ -1,0 +1,32 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: remediation-operator
+  namespace: url-shortener
+  labels:
+    app: remediation-operator
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: remediation-operator
+  template:
+    metadata:
+      labels:
+        app: remediation-operator
+    spec:
+      serviceAccountName: remediation-operator-sa
+      containers:
+        - name: remediation-operator
+          image: vaibhav04c/remediation-operator:latest
+          imagePullPolicy: Always
+          env:
+            - name: PYTHONUNBUFFERED
+              value: "1"
+          resources:
+            requests:
+              cpu: 50m
+              memory: 64Mi
+            limits:
+              cpu: 100m
+              memory: 128Mi

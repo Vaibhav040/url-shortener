@@ -31,7 +31,7 @@ variable "cluster_version" {
 variable "node_instance_type" {
   description = "EC2 instance type for worker nodes"
   type        = string
-  default     = "t3.small"
+  default     = "m7i-flex.large"
 }
 
 variable "node_desired_count" {
