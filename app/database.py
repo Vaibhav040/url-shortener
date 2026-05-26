@@ -28,7 +28,7 @@ def save_url(original_url: str, custom_code: str = None) -> dict:
     return item
 
 def get_url(short_code: str) -> dict | None:
-    response = table.get_item(key={"short_code": short_code})
+    response = table.get_item(Key={"short_code": short_code})
     return response.get("Item")
 
 def increment_visit_count(short_code: str):

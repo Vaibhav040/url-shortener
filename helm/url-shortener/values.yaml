@@ -1,7 +1,7 @@
 replicaCount: 2
 
 image:
-  repository: vaibhav040/url-shortener
+  repository: vaibhav04c/url-shortener
   pullPolicy: Always
   tag: "latest"
 
