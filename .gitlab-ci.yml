@@ -89,7 +89,7 @@ docker-build:
     expire_in: 1 hour
   needs:
     - sonarcloud-check
-    - owasp-dependency-check
+    - dependency-check
 
 trivy-scan:
   
