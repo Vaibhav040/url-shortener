@@ -1,14 +1,38 @@
-replicaCount: 2
+backend:
+  replicaCount: 2
+  image:
+    repository: vaibhav04c/url-shortener-backend
+    tag: latest
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 8000
+  resources:
+    requests:
+      cpu: 100m
+      memory: 128Mi
+    limits:
+      cpu: 250m
+      memory: 256Mi
 
-image:
-  repository: vaibhav04c/url-shortener
-  pullPolicy: Always
-  tag: "latest"
-
-service:
-  type: ClusterIP
-  port: 80
-  targetPort: 8000
+frontend:
+  replicaCount: 2
+  image:
+    repository: vaibhav04c/url-shortener-frontend
+    tag: latest
+    pullPolicy: Always
+  service:
+    type: ClusterIP
+    port: 80
+    targetPort: 80
+  resources:
+    requests:
+      cpu: 10m       
+      memory: 32Mi   
+    limits:
+      cpu: 50m
+      memory: 64Mi
 
 ingress:
   enabled: true
@@ -24,14 +48,6 @@ config:
   redisHost: url-shortener-redis
   redisPort: "6379"
   shortCodeLength: "7"
-
-resources:
-  requests:
-    cpu: 100m
-    memory: 128Mi
-  limits:
-    cpu: 250m
-    memory: 256Mi
 
 hpa:
   enabled: true
