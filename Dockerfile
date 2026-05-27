@@ -3,7 +3,7 @@ FROM python:3.12-slim AS builder
 
 WORKDIR /build
 
-COPY app/requirements.txt .
+COPY backend/requirements.txt .
 
 RUN pip install --upgrade pip && \
     pip install --no-cache-dir --prefix=/install -r requirements.txt
@@ -21,7 +21,7 @@ RUN apt-get update && \
     adduser --system --ingroup appgroup appuser
 
 COPY --from=builder /install /usr/local
-COPY app/ .
+COPY backend/ .
 
 RUN chown -R appuser:appgroup /app
 
