@@ -18,7 +18,7 @@ spec:
       serviceAccountName: remediation-operator-sa
       containers:
         - name: remediation-operator
-          image: vaibhav04c/remediation-operator:f074b255
+          vaibhav04c/remediation-operator:563089ed
           imagePullPolicy: Always
           env:
             - name: PYTHONUNBUFFERED
