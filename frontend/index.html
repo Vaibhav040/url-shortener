@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>URL Shortener | s.trendstimes.in</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+            --accent: #3b82f6;
+            --accent-hover: #2563eb;
+            --error: #ef4444;
+            --success: #10b981;
+        }
+        body {
+            font-family: system-ui, -apple-system, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+        .container {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 12px;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+            width: 100%;
+            max-width: 450px;
+            /* NEW: Clean accent border on top */
+            border-top: 5px solid var(--accent);
+        }
+        
+        /* NEW: Stylized Text Logo */
+        .logo { 
+            font-size: 1.75rem; 
+            font-weight: 800; 
+            text-align: center; 
+            margin-top: 0;
+            margin-bottom: 0.25rem;
+            letter-spacing: -0.5px;
+        }
+        .logo .highlight {
+            color: var(--accent);
+        }
+
+        p.subtitle { color: var(--text-muted); text-align: center; font-size: 0.9rem; margin-bottom: 2rem; margin-top: 0; }
+        
+        .form-group { margin-bottom: 1.2rem; }
+        label { display: block; font-size: 0.85rem; margin-bottom: 0.5rem; color: var(--text-muted); }
+        input {
+            width: 100%; padding: 0.75rem; border-radius: 6px;
+            border: 1px solid #334155; background: #0f172a; color: white;
+            box-sizing: border-box; font-size: 1rem;
+        }
+        input:focus { outline: none; border-color: var(--accent); }
+        
+        button {
+            width: 100%; padding: 0.75rem; border-radius: 6px;
+            border: none; background: var(--accent); color: white;
+            font-size: 1rem; font-weight: bold; cursor: pointer;
+            transition: background 0.2s; margin-top: 1rem;
+        }
+        button:hover { background: var(--accent-hover); }
+        button:disabled { background: var(--text-muted); cursor: not-allowed; }
+        
+        #result-box {
+            margin-top: 1.5rem; padding: 1rem; border-radius: 6px;
+            display: none; text-align: center; word-break: break-all;
+        }
+        .success { background: rgba(16, 185, 129, 0.1); border: 1px solid var(--success); }
+        .error { background: rgba(239, 68, 68, 0.1); border: 1px solid var(--error); color: #fca5a5; }
+        a { color: var(--accent); text-decoration: none; font-weight: bold; }
+        a:hover { text-decoration: underline; }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <div class="logo">URL<span class="highlight">Shortener</span></div>
+    <p class="subtitle">Production-grade infrastructure demo</p>
+
+    <div class="form-group">
+        <label for="url">Long URL</label>
+        <input type="url" id="url" placeholder="https://example.com/very/long/path" required>
+    </div>
+
+    <div class="form-group">
+        <label for="custom_code">Custom Short Code (Optional)</label>
+        <input type="text" id="custom_code" placeholder="e.g. my-link">
+    </div>
+
+    <button id="shorten-btn" onclick="shortenUrl()">Shorten URL</button>
+
+    <div id="result-box"></div>
+</div>
+
+<script>
+    async function shortenUrl() {
+        const urlInput = document.getElementById('url').value;
+        const customCodeInput = document.getElementById('custom_code').value;
+        const resultBox = document.getElementById('result-box');
+        const btn = document.getElementById('shorten-btn');
+
+        if (!urlInput) {
+            showResult('Please enter a valid URL', 'error');
+            return;
+        }
+
+        btn.disabled = true;
+        btn.innerText = 'Shortening...';
+
+        try {
+            const payload = { original_url: urlInput };
+            if (customCodeInput) {
+                payload.custom_code = customCodeInput;
+            }
+
+            const response = await fetch('/shorten', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            const data = await response.json();
+
+            if (response.ok) {
+                const shortUrl = `${window.location.origin}/${data.short_code}`;
+                showResult(`
+                    <span style="color: var(--text-muted); font-size: 0.85rem;">Success! Here is your short link:</span><br>
+                    <a href="${shortUrl}" target="_blank">${shortUrl}</a>
+                `, 'success');
+            } else {
+                showResult(data.detail || 'An error occurred', 'error');
+            }
+        } catch (error) {
+            showResult('Failed to connect to the server.', 'error');
+        } finally {
+            btn.disabled = false;
+            btn.innerText = 'Shorten URL';
+        }
+    }
+
+    function showResult(html, type) {
+        const resultBox = document.getElementById('result-box');
+        resultBox.style.display = 'block';
+        resultBox.className = type;
+        resultBox.innerHTML = html;
+    }
+</script>
+
+</body>
+</html>
