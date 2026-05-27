@@ -6,7 +6,7 @@ from prometheus_api_client import PrometheusConnect
 
 # ── Configuration ─────────────────────────────────────────
 PROMETHEUS_URL = "http://monitoring-kube-prometheus-prometheus.monitoring.svc.cluster.local:9090"
-WEBHOOK_URL = "YOUR_WEBHOOK_URL"
+WEBHOOK_URL = "https://webhook.site/c40e34b3-3ef9-4950-b9a0-64b1ddea5e4b"
 NAMESPACE = "url-shortener"
 CHECK_INTERVAL = 30        # seconds between checks
 CPU_THRESHOLD = 80         # percent — scale up above this
