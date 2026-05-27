@@ -12,4 +12,4 @@ RUN addgroup --system appgroup && \
 
 USER appuser
 
-CMD ["python", "operator.py"]
+CMD ["python", "k8s_operator.py"]
