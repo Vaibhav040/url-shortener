@@ -195,6 +195,9 @@ push-image:
   needs:
     - trivy-scan-backend
     - trivy-scan-frontend
+    # For loading the docker images built in previous stages
+    - docker-build-backend
+    - docker-build-frontend
   allow_failure: false
   only:
     - main
