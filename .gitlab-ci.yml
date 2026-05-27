@@ -111,7 +111,7 @@ build-operator:
     - docker tag $DOCKER_USER/remediation-operator:$CI_COMMIT_SHORT_SHA $DOCKER_USER/remediation-operator:latest
     - docker push $DOCKER_USER/remediation-operator:latest
     - git checkout -B main
-    - sed -i "s|REPLACEMENT_IMAGE_TAG|$DOCKER_USER/remediation-operator:$IMAGE_TAG|g" k8s/manifests/operators/remediation-deployment.yaml
+    - 'sed -i "s|image: $DOCKER_USER/remediation-operator:.*|$DOCKER_USER/remediation-operator:$IMAGE_TAG|g" k8s/manifests/operators/remediation-deployment.yaml'
     - git add k8s/manifests/operators/remediation-deployment.yaml
     - git diff-index --quiet HEAD || git commit -m "chore- update remediation operator image to $IMAGE_TAG [ci skip]"
     - git push origin HEAD:main
