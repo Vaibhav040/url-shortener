@@ -123,10 +123,15 @@ helm install ingress-nginx ingress-nginx/ingress-nginx \
   --set controller.service.type=LoadBalancer
 
 # 5. Now point your domain to this load balancer. Go to your domain registrar.
-Type:  CNAME
-Name:  s
-Value: a546d6fcacaeb40f3ab6308e71db02f5-2100767274.ap-south-1.elb.amazonaws.com
-TTL:   300
+  # get the LoadBalancer external ip with command
+  kubectl get svc -n ingress-nginx
+
+  # Then add this in Domain DNS 
+
+  Type:  CNAME
+  Name:  s
+  Value: a546d6fcacaeb40f3ab6308e71db02f5-2100767274.ap-south-1.elb.amazonaws.com
+  TTL:   300
 
 # 6. ArgoCD setup for Application deployment
 kubectl create namespace argocd
