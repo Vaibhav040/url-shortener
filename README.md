@@ -1,6 +1,5 @@
 # 🚀 URL Shortener: Production-Grade DevSecOps Architecture
 
-[![Live Demo](https://img.shields.io/badge/Live_Demo-s.trendstimes.in-success?style=for-the-badge)](https://s.trendstimes.in)
 [![FastAPI](https://img.shields.io/badge/FastAPI-005571?style=for-the-badge&logo=fastapi)](https://fastapi.tiangolo.com/)
 [![Kubernetes](https://img.shields.io/badge/kubernetes-%23326ce5.svg?style=for-the-badge&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
 [![Terraform](https://img.shields.io/badge/terraform-%235835CC.svg?style=for-the-badge&logo=terraform&logoColor=white)](https://www.terraform.io/)
@@ -20,6 +19,8 @@ The application accepts `POST` requests to shorten URLs, serves `301` redirects,
 ---
 
 ## 🏗️ Architecture & Pipeline Flow
+
+![Architecture](./Assets/url-shortener-architecture.png)
 
 The project follows a strict left-to-right, security-first pipeline:
 
@@ -252,6 +253,6 @@ serviceAccount:
 
 # 12. Test the Health Endpoint
 curl http://localhost:8000/health
-
+---
 # 4. Shorten a URL
-![URL Shortener UI](Assets/url-shortener-UI.png)
+![URL FInal Show](Assets/url-shortener-UI.png)
