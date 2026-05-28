@@ -15,12 +15,17 @@ __pycache__/
 # Docker
 .docker/
 
-# Terraform state - contains sensitive output
-terraform/.terraform/
-terraform/*.tfstate
-terraform/*.tfstate.backup
-terraform/.terraform.lock.hcl
+# Terraform infrastructure - contains sensitive output
+terraform/infrastructure/.terraform/
+terraform/infrastructure/*.tfstate
+terraform/infrastructure/*.tfstate.backup
+terraform/infrastructure/.terraform.lock.hcl
 
+# Terraform backend - contains sensitive output
+terraform/backend/.terraform/
+terraform/backend/*.tfstate
+terraform/backend/*.tfstate.backup
+terraform/backend/.terraform.lock.hcl
 # Test cache
 .pytest_cache/
 .coverage
