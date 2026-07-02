@@ -16,6 +16,10 @@ The application accepts `POST` requests to shorten URLs, serves `301` redirects,
 
 **Key Achievement:** Every component was built from scratch—no tutorial forks. The full CI/CD pipeline blocks deployment on security failures, and the app runs on managed Kubernetes with automatic TLS, autoscaling, and self-healing.
 
+## Why this project is production-grade:
+
+Unlike standard hobby projects, this architecture implements Zero-Trust security (IRSA) to eliminate static cloud credentials, GitOps (ArgoCD) for immutable state management, and Automated Remediation using custom Kubernetes operators—mimicking the SRE workflows used in high-scale cloud environments.
+
 ---
 
 ## 🏗️ Architecture & Pipeline Flow
